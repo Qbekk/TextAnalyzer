@@ -5,54 +5,76 @@ import java.util.List;
 import java.util.Scanner;
 import java.lang.System;
 public class analyze {
+	static Scanner scan;
 	public static void main(String[] args) {
+		scan=new Scanner(System.in);
 		File file;
 		if(args.length>0)
 			file=getFile(args[0]);
 		else
-			file=getFile(".");
+			file=getFile();
 		System.out.println(file.getPath());
 		List<String> fileContent=getString(file);
-		for(String line:fileContent)
-			System.out.print(line);
+		
+		System.out.println(fileContent.size());
+		
 		
 		/*String current = new File(".").getCanonicalPath();
 		System.out.println(current);
 		*/
 	}
 	public static String askForPath(){
-		Scanner scan=new Scanner(System.in);
-		System.out.println("Please provide an absolute or relative path to your text file");
-		return scan.next();
-	}
-	public static File getFile(String arg){
-		//reliably handle file input
 		
+		System.out.println("Please provide an absolute or relative path to your text file");
+		String input=scan.next();
+		return input;
+	}
+	public static File getFile(String arg){//initial getter for args[]
 		File file=null;
 		try{
 			file=new File(arg);
 		}
 		catch (Exception e)
 		{
-			System.out.println(e);
+			System.out.println(e+" "+e.getMessage());
 			
 		}
 		finally{
-			if (file.isDirectory()){
-				System.out.println("You pointed to a directory, only text files allowed!");
-				file=new File(askForPath());
+			if (file.isDirectory()||!file.exists()){
+				System.out.println("Wrong path!(nonexistant or not a file)");
+				file=getFile();
 			}
 		}
 		return file;
 	}
+	public static File getFile(){//gets after first with no arg
+		File file;
+		boolean first=true;
+		do{
+			if (!first){
+				System.out.println("Wrong path!(nonexistant or a directory)");
+			}
+			first=false;
+			file=new File(askForPath());
+			if (!file.exists()){
+				file=new File(file.getPath()+".txt");
+			}
+		}while(!file.exists()||file.isDirectory());
+		return file;
+	}
+	
 	public static List<String> getString(File file){
-		List<String> result=new ArrayList<String>();
+		List<String> result = new ArrayList<String>();
 		try{
-		result=Files.readAllLines(file.toPath());
+		result=Files.readAllLines(file.toPath());	
 		}
-		catch(IOException e) {
+		catch(IOException e){
+			
 			System.err.println("I/O Error while reading file contents"+e.getMessage());
-			System.err.println("The current working directory is: "+System.getProperty("user.dir"));
+			//System.err.println("The current working directory is: "+System.getProperty("user.dir"));
+		}
+		finally{
+			
 		}
 		return result;
 	}
