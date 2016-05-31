@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,7 @@ public class analyze {
 	public static List<String> getString(File file){
 		List<String> result = new ArrayList<String>();
 		try{
-		result=Files.readAllLines(file.toPath());	
+		result=Files.readAllLines(file.toPath(),java.nio.charset.StandardCharsets.UTF_8);	
 		}
 		catch(IOException e){
 			
