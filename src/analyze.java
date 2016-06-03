@@ -23,6 +23,9 @@ public class analyze {
 			content+=line;
 		String[] sentences=content.split("[.?!]");
 		System.out.println(sentences.length);
+		Sentence sent=new Sentence(sentences[sentences.length-1]);
+		System.out.println(sent.getWords().get(0).getContent());
+			
 		/*String current = new File(".").getCanonicalPath();
 		System.out.println(current);
 		*/

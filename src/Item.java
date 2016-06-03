@@ -1,8 +1,7 @@
 import java.util.List;
 
-public class Item {
+public abstract class Item {
 	protected String content;
 	
-	
-	
+	public abstract String getContent();
 }
