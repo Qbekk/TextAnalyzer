@@ -16,16 +16,14 @@ public class analyze {
 			file=getFile();
 		System.out.println(file.getPath());
 		List<String> fileContent=getString(file);
+		//create objects below
 		
 		System.out.println(fileContent.size());
 		String content="";
 		for(String line: fileContent)
 			content+=line;
-		String[] sentences=content.split("[.?!]");
-		System.out.println(sentences.length);
-		Sentence sent=new Sentence(sentences[sentences.length-1]);
-		System.out.println(sent.getWords().get(0).getContent());
-			
+		Text text=new Text(content);
+		System.out.println(text.getSentences().get(1).getContent());
 		/*String current = new File(".").getCanonicalPath();
 		System.out.println(current);
 		*/
@@ -70,10 +68,10 @@ public class analyze {
 		return file;
 	}
 	
-	public static List<String> getString(File file){
+	public static List<String> getString(File file){//extracts the contents of a file into a string
 		List<String> result = new ArrayList<String>();
 		try{
-		result=Files.readAllLines(file.toPath(),java.nio.charset.StandardCharsets.UTF_8);	
+		result=Files.readAllLines(file.toPath(),java.nio.charset.Charset.defaultCharset());	
 		}
 		catch(IOException e){
 			
