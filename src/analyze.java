@@ -18,8 +18,11 @@ public class analyze {
 		List<String> fileContent=getString(file);
 		
 		System.out.println(fileContent.size());
-		
-		
+		String content="";
+		for(String line: fileContent)
+			content+=line;
+		String[] sentences=content.split("[.?!]");
+		System.out.println(sentences.length);
 		/*String current = new File(".").getCanonicalPath();
 		System.out.println(current);
 		*/
