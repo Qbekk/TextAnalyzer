@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 public class Text extends Item {
-	ArrayList<Item> Sentences=new ArrayList<Item>();
+	ArrayList<Sentence> Sentences=new ArrayList<Sentence>();
 	Text(String content){
 		this.content=content;
 		makeSentences();
@@ -9,6 +9,8 @@ public class Text extends Item {
 	private void makeSentences(){
 		String[] sentences=content.split("[.?!]");
 		for(String sentence:sentences){
+			sentence=sentence.trim();
+			//if( sentence.matches("\\w"))
 			Sentences.add(new Sentence(sentence));
 		}
 	}
@@ -17,7 +19,7 @@ public class Text extends Item {
 	public String getContent(){
 		return content;
 	}
-	public ArrayList<Item> getSentences(){
+	public ArrayList<Sentence> getSentences(){
 		return Sentences;
 	}
 }

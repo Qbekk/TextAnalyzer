@@ -4,26 +4,41 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Date;
 import java.lang.System;
 public class analyze {
 	static Scanner scan;
 	public static void main(String[] args) {
+		Date start,end;
 		scan=new Scanner(System.in);
 		File file;
 		if(args.length>0)
 			file=getFile(args[0]);
 		else
 			file=getFile();
-		System.out.println(file.getPath());
+		System.out.println("Working on file: "+file.getPath());
 		List<String> fileContent=getString(file);
 		//create objects below
-		
-		System.out.println(fileContent.size());
+		System.out.print("\nReading file...");
+		start=new Date();
 		String content="";
 		for(String line: fileContent)
 			content+=line;
 		Text text=new Text(content);
-		System.out.println(text.getSentences().get(1).getContent());
+		end=new Date();
+		
+		System.out.print("Done! Elapased time:" +(end.getTime()-start.getTime())+" ms\n");
+		Analyzer analysis=new Analyzer(text);
+		analysis.run();
+		for(Sentence sent:text.getSentences()){
+			for(Word word:sent.getWords()){
+				System.out.println(word.getContent()+" ");
+			}
+			System.out.print(".");
+		}
+		System.out.println("\nWord Count: "+analysis.getWordTotal());
+		System.out.println("Avg word length: "+analysis.getWordLenAvg());
+		
 		/*String current = new File(".").getCanonicalPath();
 		System.out.println(current);
 		*/
@@ -71,7 +86,7 @@ public class analyze {
 	public static List<String> getString(File file){//extracts the contents of a file into a string
 		List<String> result = new ArrayList<String>();
 		try{
-		result=Files.readAllLines(file.toPath(),java.nio.charset.Charset.defaultCharset());	
+		result=Files.readAllLines(file.toPath(),java.nio.charset.StandardCharsets.UTF_8);	
 		}
 		catch(IOException e){
 			
