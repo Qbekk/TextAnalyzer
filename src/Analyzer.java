@@ -28,7 +28,7 @@ public class Analyzer {
 		wordDistribution=new int[100];
 		System.out.print("\nStarting text analysis...");
 		start=new Date();
-		for(int i=0;i<21;i++)
+		for(int i=0;i<wordDistribution.length-1;i++)
 			wordDistribution[i]=0;
 		//iterate all words
 		for(Sentence sent:text.getSentences()){
@@ -37,7 +37,7 @@ public class Analyzer {
 				tempWordLen=word.getContent().length();
 				wordCharSum+=tempWordLen;
 				if(tempWordLen<=wordDistribution.length-2)
-					wordDistribution[tempWordLen]++;//-1
+					wordDistribution[tempWordLen-1]++;//-1
 				else
 					wordDistribution[wordDistribution.length-1]++;
 				
@@ -55,17 +55,17 @@ public class Analyzer {
 		for(int i=0;i<wordDistribution.length-1;i++){
 			if(wordDistribution[i]>max){
 				max=wordDistribution[i];
-				wordDominant=i;
+				wordDominant=i+1;
 				hasDominant=true;
 			}
-			if(wordDistribution[i]==max&&max!=0){
+			else if(wordDistribution[i]==max&&max!=0){
 				hasDominant=false;
-				wordDominant=0;
 			}
 		}
 		if (!hasDominant){
 			wordDominant=0;
 		}
+		
 		end=new Date();
 		System.out.print("Done! Elapased time:" +(end.getTime()-start.getTime())+" ms");
 	}
@@ -74,9 +74,9 @@ public class Analyzer {
 	private double computeStdDev(double avg, int[] distribution){
 		double result=0;
 		for(int i=0;i<distribution.length-1;i++){//calculates variance //
-			result+=distribution[i]*Math.pow((avg-(i)),2);//+1
+			result+=distribution[i]*Math.pow((avg-(i+1)),2);//+1
 		}
-		
+		result/=wordTotal;
 		
 		return Math.sqrt(result);
 	}
